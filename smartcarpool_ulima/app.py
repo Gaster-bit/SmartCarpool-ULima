@@ -10,6 +10,7 @@ Ejecutar localmente con:
 
 import streamlit as st
 import pandas as pd
+import os
 import folium
 from streamlit_folium import st_folium
 
@@ -26,7 +27,12 @@ from chatbot.asistente import responder_pregunta
 
 st.set_page_config(page_title="SmartCarpool ULima", page_icon="🚗", layout="wide")
 
-RUTA_DATASET = "data/Ride_Sharing_Dataset.xlsx"
+# Ruta absoluta basada en la ubicación de este archivo (app.py), NO en el
+# directorio desde donde se ejecuta el proceso. Esto evita el error
+# "FileNotFoundError" cuando se despliega en Streamlit Cloud, donde el
+# repositorio puede tener una carpeta extra antes de app.py.
+CARPETA_ACTUAL = os.path.dirname(os.path.abspath(__file__))
+RUTA_DATASET = os.path.join(CARPETA_ACTUAL, "data", "Ride_Sharing_Dataset.xlsx")
 
 # ---------------------------------------------------------------------------
 # Carga y entrenamiento (se cachea para no recalcular en cada clic)
